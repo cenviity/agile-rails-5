@@ -46,7 +46,10 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('LineItem.count', -1) do
       delete line_item_url(@line_item)
     end
-
-    assert_redirected_to line_items_url
+    
+    follow_redirect!
+    
+    assert_select 'h2', 'Your Cart'
+    assert_select 'td', text: 'Programming Ruby 1.9', count: 0
   end
 end

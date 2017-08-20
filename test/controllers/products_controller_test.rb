@@ -14,6 +14,17 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get products_url
     assert_response :success
+    assert_select 'table'
+    assert_select('tr', minimum: 3) do |rows|
+      rows.each do |row|
+        assert_select row, '.list_description'
+        assert_select(row, '.list_actions') do |cells|
+          cells.each do |cell|
+            assert_select cell, 'a', 3
+          end
+        end
+      end
+    end
   end
 
   test "should get new" do

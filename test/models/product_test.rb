@@ -28,6 +28,16 @@ class ProductTest < ActiveSupport::TestCase
     assert product.valid?
   end
   
+  test "product price must be less than or equal to 1000" do
+    product = Product.new(title:       "My Book Title",
+                          description: "yyy",
+                          image_url:   "zzz.jpg")
+    product.price = 1001
+    assert product.invalid?
+    assert_equal ["must be less than or equal to 1000"],
+      product.errors[:price]
+  end
+  
   def new_product(image_url)
     Product.new(title:       "My Book Title",
                 description: "yyy",
@@ -47,6 +57,13 @@ class ProductTest < ActiveSupport::TestCase
     bad.each do |name|
       assert new_product(name).invalid?, "#{name} shouldn't be valid"
     end
+  end
+  
+  test "product is not valid without a unique image url" do
+    product = new_product(products(:ruby).image_url)
+    
+    assert product.invalid?
+    assert_equal ["has already been taken"], product.errors[:image_url]
   end
   
   test "product is not valid without a unique title" do

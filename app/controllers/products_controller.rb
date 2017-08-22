@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  include ActiveModel::Serializers::Xml
   before_action :set_product,
     only: [:show, :edit, :update, :destroy, :who_bought]
 
@@ -87,7 +88,21 @@ class ProductsController < ApplicationController
             } }
           )
         }
-        format.xml { render xml: @product.to_xml }
+        format.xml { render xml:
+          @product.to_xml(
+            only: [:title, :updated_at],
+            include: { orders: {
+              except: [:created_at, :updated_at],
+              include: { line_items: {
+                only: :quantity,
+                methods: :total_price,
+                include: { product: {
+                  only: :title
+                } }
+              } }
+            } }
+          )
+        }
       end
     end
   end

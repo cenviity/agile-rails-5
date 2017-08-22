@@ -25,7 +25,7 @@
           <th><%= number_to_currency order.line_items.map(&:total_price).sum %></th>
         </tr>
       </table>
-      <div>Paid by <%= order.pay_type %></div>
+      <div>Paid by <%= order.payment_type %></div>
     </div>
     <div>Customer: <%= order.name %></div>
     <div>Email: <%= order.email %></div>

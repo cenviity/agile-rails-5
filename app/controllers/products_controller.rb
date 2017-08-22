@@ -72,6 +72,22 @@ class ProductsController < ApplicationController
       respond_to do |format|
         format.atom
         format.html
+        format.json { render json:
+          @product.to_json(
+            only: [:title, :updated_at],
+            include: { orders: {
+              except: [:created_at, :updated_at],
+              include: { line_items: {
+                only: :quantity,
+                methods: :total_price,
+                include: { product: {
+                  only: :title
+                } }
+              } }
+            } }
+          )
+        }
+        format.xml { render xml: @product.to_xml }
       end
     end
   end

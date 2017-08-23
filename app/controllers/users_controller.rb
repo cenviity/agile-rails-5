@@ -41,12 +41,17 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    current_password = params[:user].delete(:current_password)
+    
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.authenticate(current_password) && @user.update(user_params)
         format.html { redirect_to users_url,
           notice: "User #{@user.name} was successfully updated." }
         format.json { render :show, status: :ok, location: @user }
       else
+        unless @user.authenticate(current_password)
+          @user.errors.add(:current_password, "is incorrect")
+        end
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end

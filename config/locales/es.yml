@@ -43,6 +43,14 @@ es:
       messages:
         inclusion: "no est&aacute; incluido en la lista"
         blank:     "no puede quedar en blanco"
+    models:
+      order:       "pedido"
+    attributes:
+      order:
+        address:   "Direcci&oacute;n"
+        name:      "Nombre"
+        email:     "E-mail"
+        pay_type:  "Forma de pago"
   
   errors:
     template:

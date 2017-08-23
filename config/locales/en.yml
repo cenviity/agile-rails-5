@@ -32,3 +32,9 @@ en:
     index:
       title_html: "Your Pragmatic Catalogue"
       add_html:   "Add to Cart"
+  
+  carts:
+    cart:
+      title:    "Your Cart"
+      empty:    "Empty cart"
+      checkout: "Checkout"
